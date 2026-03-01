@@ -1,0 +1,11 @@
+.DS_Store
+.gitattributes
+node_modules/
+npm-debug.log
+crashreports/
+debug/
+bugs/
+.bin/
+coverage/
+dist/
+persist/

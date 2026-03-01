@@ -1,0 +1,80 @@
+{
+  "name": "homebridge-roborock-ergin",
+  "version": "1.0.0",
+  "description": "Xiaomi Vacuum Cleaner - 1st (Mi Robot), 2nd (Roborock S50 + S55), 3rd Generation (Roborock S6) and S5 Max - plugin for Homebridge.",
+  "author": "Ergin",
+  "license": "MIT",
+  "keywords": [
+    "homebridge-plugin",
+    "xiaomi",
+    "mi robot",
+    "vacuum cleaner",
+    "roborock s50",
+    "roborock s55",
+    "roborock s5",
+    "roborock s5 max",
+    "xiaomi vacuum gen1",
+    "xiaomi vacuum gen2",
+    "xiaomi vacuum gen3",
+    "roborock s6",
+    "roborock t6",
+    "roborock t4",
+    "roborock q5 pro",
+    "xiaowa lite c10",
+    "xiaowa c10",
+    "mi robot 1s"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozturkergin/homebridge-roborock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ozturkergin/homebridge-roborock/issues"
+  },
+  "homepage": "https://github.com/ozturkergin/homebridge-roborock",
+  "bin": {
+    "miio-vacuum": "dist/miio/cli/index.js"
+  },
+  "main": "dist/index.js",
+  "engines": {
+    "homebridge": "^1.6.0 || ^2.0.0-beta.0",
+    "node": "^18.20.4 || ^20.15.1 || ^22.0.0 || ^24.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean",
+    "preversion": "npm run build && npm test",
+    "//": "Ideally, 👇 'version' should update the file CHANGELOG.md (replace Next with the current version)",
+    "version": "git add .",
+    "postversion": "git push && git push --tags",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "abstract-things": "0.9.0",
+    "chalk": "4.1.2",
+    "debug": "4.4.3",
+    "deep-equal": "2.2.3",
+    "rxjs": "^7.5.6",
+    "semver": "7.7.4",
+    "tinkerhub-discovery": "0.3.1",
+    "yargs": "15.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.29.0",
+    "@babel/preset-env": "7.29.0",
+    "@babel/preset-typescript": "7.28.5",
+    "@types/jest": "30.0.0",
+    "@types/node": "24.11.0",
+    "@types/semver": "7.7.1",
+    "babel-jest": "30.2.0",
+    "homebridge": "^2.0.0-beta.23",
+    "jest": "30.2.0",
+    "prettier": "3.6.2",
+    "rimraf": "6.1.3",
+    "typescript": "5.9.3"
+  }
+}
