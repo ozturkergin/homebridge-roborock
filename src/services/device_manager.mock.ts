@@ -16,6 +16,8 @@ export const createDeviceManagerMock = (): DeviceManagerMock => {
     isCleaning: true,
     isPaused: false,
     device: miio.device,
+    isConnected: true,
+    waitForHandshake: jest.fn().mockResolvedValue(undefined),
     property: jest.fn(),
     ensureDevice: jest.fn(),
   };

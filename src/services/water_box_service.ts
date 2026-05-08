@@ -160,27 +160,37 @@ export class WaterBoxService extends PluginServiceClass {
   }
 
   private async getWaterSpeed() {
-    await this.deviceManager.ensureDevice("getWaterSpeed");
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getWaterSpeed | Not connected yet, returning 0`);
+        return 0;
+      }
+      await this.deviceManager.ensureDevice("getWaterSpeed");
 
-    const speed = await this.deviceManager.device.getWaterBoxMode();
-    this.log.info(
-      `getWaterSpeed | WaterBoxMode is ${speed} over miIO. Converting to HomeKit`
-    );
-
-    const waterSpeed = this.findWaterSpeedModeFromMiio(speed);
-
-    let homekitValue = 0;
-    if (waterSpeed) {
-      const { homekitTopLevel, name } = waterSpeed;
+      const speed = await this.deviceManager.device.getWaterBoxMode();
       this.log.info(
-        `getWaterSpeed | WaterBoxMode is ${speed} over miIO "${name}" > HomeKit speed ${homekitTopLevel}%`
+        `getWaterSpeed | WaterBoxMode is ${speed} over miIO. Converting to HomeKit`
       );
-      homekitValue = homekitTopLevel || 0;
+
+      const waterSpeed = this.findWaterSpeedModeFromMiio(speed);
+
+      let homekitValue = 0;
+      if (waterSpeed) {
+        const { homekitTopLevel, name } = waterSpeed;
+        this.log.info(
+          `getWaterSpeed | WaterBoxMode is ${speed} over miIO "${name}" > HomeKit speed ${homekitTopLevel}%`
+        );
+        homekitValue = homekitTopLevel || 0;
+      }
+      this.service
+        .getCharacteristic(this.hap.Characteristic.On)
+        .updateValue(homekitValue > 0);
+      return homekitValue;
+    } catch (err) {
+      this.log.error(`getWaterSpeed | Failed getting the water speed.`, err);
+      return 0;
     }
-    this.service
-      .getCharacteristic(this.hap.Characteristic.On)
-      .updateValue(homekitValue > 0);
-    return homekitValue;
   }
 
   private findWaterSpeedModeFromMiio(speed) {

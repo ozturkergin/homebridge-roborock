@@ -1,0 +1,77 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\Ergin> ssh ergin@homebridge.local
+ergin@homebridge.local's password:
+Linux homebridge 6.12.47+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.12.47-1+rpt1 (2025-09-16) aarch64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+
+*** Homebridge Raspbian Homebridge-trixie-64bit - Raspberry Pi 3 Model B Rev 1.2 ***
+
+homebridge was created by nfarina and licensed under the Apache License 2.0.
+homebridge-config-ui-x was created by oznu and licensed under the MIT License.
+
+To configure Homebridge browse to the one of the following addresses from
+another device on your network:
+
+* http://homebridge.local:8581
+* http://192.168.3.34:8581
+
+All Homebridge configuration can be completed via the Homebridge Web UI.
+
+Homebridge storage path: /var/lib/homebridge
+Homebridge config.json path: /var/lib/homebridge/config.json
+
+Restart Homebridge CMD: sudo hb-service restart
+View Logs CMD: sudo hb-service logs
+
+Manage Server: sudo hb-config
+Enter Homebridge Runtime Environment: sudo hb-shell
+
+Last login: Sun Mar  1 01:47:23 2026 from fe80::6b2c:c553:7f49:829a%wlan0
+ergin@homebridge:~ $ sudo npm install -g https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-xiaomi-roborock-vacuum-0.35.0.tgz
+sudo: npm: command not found
+ergin@homebridge:~ $ sudo /opt/homebridge/bin/npm install -g https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-xiaomi-roborock-vacuum-0.35.0.tgz
+env: ‘node’: No such file or directory
+ergin@homebridge:~ $ sudo /opt/homebridge/bin/node /opt/homebridge/bin/npm install -g https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-xiaomi-roborock-vacuum-0.35.0.tgz
+npm warn deprecated appdirectory@0.1.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+npm warn deprecated fs-write-stream-atomic@1.0.10: This package is no longer supported.
+
+added 138 packages in 41s
+
+50 packages are looking for funding
+  run `npm fund` for details
+npm notice
+npm notice New minor version of npm available! 11.9.0 -> 11.11.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.11.0
+npm notice To update run: npm install -g npm@11.11.0
+npm notice
+ergin@homebridge:~ $ sudo hb-service restart
+Restarting Homebridge...
+ergin@homebridge:~ $ sudo hb-service add https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-xiaomi-roborock-vacuum-0.35.0.tgz
+
+added 138 packages in 44s
+ergin@homebridge:~ $ sudo hb-service remove homebridge-xiaomi-roborock-vacuum
+
+removed 138 packages in 8s
+ergin@homebridge:~ $ sudo hb-service add https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-roborock-ergin-1.0.0.tgz
+
+added 138 packages in 35s
+ergin@homebridge:~ $ sudo hb-service restart
+Restarting Homebridge...
+ergin@homebridge:~ $ sudo hb-service remove homebridge-xiaomi-roborock-vacuum
+
+up to date in 7s
+ergin@homebridge:~ $ sudo hb-service add https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-roborock-ergin-1.0.0.tgz
+
+changed 1 package in 12s
+ergin@homebridge:~ $ sudo hb-service restart
+Restarting Homebridge...
+ergin@homebridge:~ $

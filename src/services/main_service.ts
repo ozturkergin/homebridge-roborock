@@ -112,13 +112,18 @@ export class MainService extends PluginServiceClass {
 
   public async getCleaning() {
     try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getCleaning | Not connected yet, returning false`);
+        return false;
+      }
       const isCleaning = this.deviceManager.isCleaning;
       this.log.info(`getCleaning | Cleaning is ${isCleaning}`);
 
       return isCleaning;
     } catch (err) {
       this.log.error(`getCleaning | Failed getting the cleaning status.`, err);
-      throw err;
+      return false;
     }
   }
 
@@ -165,20 +170,30 @@ export class MainService extends PluginServiceClass {
   }
 
   private async getSpeed() {
-    await this.deviceManager.ensureDevice("getSpeed");
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getSpeed | Not connected yet, returning 0`);
+        return 0;
+      }
+      await this.deviceManager.ensureDevice("getSpeed");
 
-    const speed = await this.deviceManager.device.fanSpeed();
-    this.log.info(
-      `getSpeed | Fanspeed is ${speed} over miIO. Converting to HomeKit`
-    );
+      const speed = await this.deviceManager.device.fanSpeed();
+      this.log.info(
+        `getSpeed | Fanspeed is ${speed} over miIO. Converting to HomeKit`
+      );
 
-    const { homekitTopLevel, name } = this.findSpeedModeFromMiio(speed) || {};
+      const { homekitTopLevel, name } = this.findSpeedModeFromMiio(speed) || {};
 
-    this.log.info(
-      `getSpeed | FanSpeed is ${speed} over miIO "${name}" > HomeKit speed ${homekitTopLevel}%`
-    );
+      this.log.info(
+        `getSpeed | FanSpeed is ${speed} over miIO "${name}" > HomeKit speed ${homekitTopLevel}%`
+      );
 
-    return homekitTopLevel || 0;
+      return homekitTopLevel || 0;
+    } catch (err) {
+      this.log.error(`getSpeed | Failed getting the fan speed.`, err);
+      return 0;
+    }
   }
 
   public async setSpeed(speed) {

@@ -17,7 +17,10 @@ export class ProductInfo extends PluginServiceClass {
       .onGet(() => this.getFirmware());
     this.service
       .getCharacteristic(this.hap.Characteristic.Model)
-      .onGet(() => this.deviceManager.model);
+      .onGet(() => {
+        if (!this.deviceManager.isConnected) return "Roborock";
+        return this.deviceManager.model;
+      });
     this.service
       .getCharacteristic(this.hap.Characteristic.SerialNumber)
       .onGet(() => this.getSerialNumber());
@@ -61,9 +64,14 @@ export class ProductInfo extends PluginServiceClass {
   }
 
   private async getFirmware() {
-    await this.deviceManager.ensureDevice("getFirmware");
-
     try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getFirmware | Not connected yet, returning unknown`);
+        return "unknown";
+      }
+      await this.deviceManager.ensureDevice("getFirmware");
+
       const firmware = await this.deviceManager.device.getDeviceInfo();
       this.log.info(`getFirmware | FirmwareVersion is ${firmware.fw_ver}`);
 
@@ -72,14 +80,19 @@ export class ProductInfo extends PluginServiceClass {
       return firmware.fw_ver;
     } catch (err) {
       this.log.error(`getFirmware | Failed getting the firmware version.`, err);
-      throw err;
+      return "unknown";
     }
   }
 
   private async getSerialNumber() {
-    await this.deviceManager.ensureDevice("getSerialNumber");
-
     try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getSerialNumber | Not connected yet, returning Unknown`);
+        return `Unknown`;
+      }
+      await this.deviceManager.ensureDevice("getSerialNumber");
+
       const serialNumber = await this.deviceManager.device.getSerialNumber();
       this.log.info(`getSerialNumber | Serial Number is ${serialNumber}`);
 

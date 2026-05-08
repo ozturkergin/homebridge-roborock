@@ -86,7 +86,7 @@ describe("ProductInfo", () => {
 
       await new Promise((resolve) => process.nextTick(resolve));
 
-      expect(updateCharacteristicSpy).toHaveBeenCalledTimes(2);
+      expect(updateCharacteristicSpy).toHaveBeenCalledTimes(3);
       expect(updateCharacteristicSpy).toHaveBeenNthCalledWith(
         1,
         hap.Characteristic.Model,
@@ -96,6 +96,11 @@ describe("ProductInfo", () => {
         2,
         hap.Characteristic.SerialNumber,
         "Unknown"
+      );
+      expect(updateCharacteristicSpy).toHaveBeenNthCalledWith(
+        3,
+        hap.Characteristic.FirmwareRevision,
+        "unknown"
       );
     });
   });

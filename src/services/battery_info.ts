@@ -67,28 +67,58 @@ export class BatteryInfo extends PluginServiceClass {
   }
 
   private async getBattery() {
-    const batteryLevel = await this.deviceManager.device.batteryLevel();
-    this.log.info(`getBattery | BatteryLevel is ${batteryLevel}%`);
-    return batteryLevel;
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getBattery | Not connected yet, returning 0`);
+        return 0;
+      }
+      const batteryLevel = await this.deviceManager.device.batteryLevel();
+      this.log.info(`getBattery | BatteryLevel is ${batteryLevel}%`);
+      return batteryLevel;
+    } catch (err) {
+      this.log.error(`getBattery | Failed getting the battery level.`, err);
+      return 0;
+    }
   }
 
   private async getBatteryLow() {
-    const batteryLevel = await this.deviceManager.device.batteryLevel();
-    this.log.info(`getBatteryLow | BatteryLevel is ${batteryLevel}%`);
-    return batteryLevel < 20
-      ? this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
-      : this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getBatteryLow | Not connected yet, returning NORMAL`);
+        return this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+      }
+      const batteryLevel = await this.deviceManager.device.batteryLevel();
+      this.log.info(`getBatteryLow | BatteryLevel is ${batteryLevel}%`);
+      return batteryLevel < 20
+        ? this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
+        : this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+    } catch (err) {
+      this.log.error(`getBatteryLow | Failed getting the battery level.`, err);
+      return this.hap.Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
+    }
   }
 
   private async getCharging() {
-    const status = this.deviceManager.state;
-    const isCharging = status === "charging";
-    this.log.info(
-      `getCharging | Charging is ${isCharging} (Status is ${status})`
-    );
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getCharging | Not connected yet, returning NOT_CHARGING`);
+        return this.hap.Characteristic.ChargingState.NOT_CHARGING;
+      }
+      const status = this.deviceManager.state;
+      const isCharging = status === "charging";
+      this.log.info(
+        `getCharging | Charging is ${isCharging} (Status is ${status})`
+      );
 
-    return isCharging
-      ? this.hap.Characteristic.ChargingState.CHARGING
-      : this.hap.Characteristic.ChargingState.NOT_CHARGING;
+      return isCharging
+        ? this.hap.Characteristic.ChargingState.CHARGING
+        : this.hap.Characteristic.ChargingState.NOT_CHARGING;
+    } catch (err) {
+      this.log.error(`getCharging | Failed getting the charging state.`, err);
+      return this.hap.Characteristic.ChargingState.NOT_CHARGING;
+    }
   }
 }

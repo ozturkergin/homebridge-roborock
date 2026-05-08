@@ -15,7 +15,7 @@ describe("entrypoint", () => {
 
   test("should register the accessory", () => {
     expect(api.registerAccessory).toHaveBeenCalledWith(
-      "homebridge-xiaomi-roborock-vacuum",
+      "homebridge-roborock-ergin",
       "XiaomiRoborockVacuum",
       expect.any(Function)
     );

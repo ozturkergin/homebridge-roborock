@@ -45,6 +45,12 @@ export class DeviceManager {
 
   private connectingPromise: Promise<void> | null = null;
   private connectRetry = setTimeout(() => void 0, 100); // Noop timeout only to initialise the property
+  private handshakeResolved = false;
+  private handshakeResolve?: () => void;
+  public readonly handshakePromise = new Promise<void>((resolve) => {
+    this.handshakeResolve = resolve;
+  });
+
   constructor(
     private readonly hap: HAP,
     private readonly log: Logger,
@@ -66,7 +72,19 @@ export class DeviceManager {
   }
 
   public get model() {
-    return this.internalDevice$.value?.miioModel || "unknown model";
+    return this.internalDevice$.value?.miioModel || "unknown";
+  }
+
+  public get isConnected() {
+    return !!this.internalDevice$.value;
+  }
+
+  public async waitForHandshake(timeoutMs = 5000) {
+    if (this.isConnected) return;
+    await Promise.race([
+      this.handshakePromise,
+      new Promise((resolve) => setTimeout(resolve, timeoutMs)),
+    ]);
   }
 
   public get state() {
@@ -89,14 +107,18 @@ export class DeviceManager {
   }
 
   public property<T>(propertyName: string) {
-    return this.device.property<T>(propertyName);
+    return this.internalDevice$.value?.property<T>(propertyName);
   }
 
   public async ensureDevice(callingMethod: string) {
     try {
       if (!this.internalDevice$.value) {
         const errMsg = `${callingMethod} | No vacuum cleaner is discovered yet.`;
-        this.log.error(errMsg);
+        if (this.handshakeResolved) {
+          this.log.error(errMsg);
+        } else {
+          this.log.debug(errMsg);
+        }
         throw new Error(errMsg);
       }
 
@@ -164,6 +186,9 @@ export class DeviceManager {
       this.log.info(
         "STA getDevice | BatteryLevel: " + this.property("batteryLevel")
       );
+
+      this.handshakeResolved = true;
+      this.handshakeResolve?.();
 
       this.device.on<ErrorChangedEvent>("errorChanged", (error) =>
         this.internalErrorChanged$.next(error)

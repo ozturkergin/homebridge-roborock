@@ -39,10 +39,10 @@ describe("DeviceManager", () => {
         ip: "192.168.0.1",
         token: "token",
       });
-      expect(deviceManager.model).toStrictEqual("unknown model");
-      expect(() => deviceManager.state).toThrow("Not connected yet");
-      expect(() => deviceManager.isCleaning).toThrow("Not connected yet");
-      expect(() => deviceManager.isPaused).toThrow("Not connected yet");
+      expect(deviceManager.model).toStrictEqual("unknown");
+      expect(deviceManager.state).toBeUndefined();
+      expect(deviceManager.isCleaning).toStrictEqual(false);
+      expect(deviceManager.isPaused).toStrictEqual(false);
     });
 
     test("connects and loads", async () => {

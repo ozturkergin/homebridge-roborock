@@ -46,12 +46,22 @@ export class DockService extends PluginServiceClass {
   }
 
   private async getDocked() {
-    const status = this.deviceManager.state;
-    const isCharging = status === "charging";
-    this.log.info(
-      `getDocked | Robot Docked is ${isCharging} (Status is ${status})`
-    );
+    try {
+      await this.deviceManager.waitForHandshake(2000);
+      if (!this.deviceManager.isConnected) {
+        this.log.debug(`getDocked | Not connected yet, returning false`);
+        return false;
+      }
+      const status = this.deviceManager.state;
+      const isCharging = status === "charging";
+      this.log.info(
+        `getDocked | Robot Docked is ${isCharging} (Status is ${status})`
+      );
 
-    return isCharging;
+      return isCharging;
+    } catch (err) {
+      this.log.error(`getDocked | Failed getting the docked status.`, err);
+      return false;
+    }
   }
 }
