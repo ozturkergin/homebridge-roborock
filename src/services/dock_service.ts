@@ -54,7 +54,7 @@ export class DockService extends PluginServiceClass {
       }
       const status = this.deviceManager.state;
       const isCharging = status === "charging";
-      this.log.info(
+      this.log.debug(
         `getDocked | Robot Docked is ${isCharging} (Status is ${status})`
       );
 

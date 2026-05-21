@@ -5,6 +5,7 @@ import { PluginServiceClass } from "./plugin_service_class";
 
 export class ProductInfo extends PluginServiceClass {
   public firmware?: string;
+  private serialNumber?: string;
   private readonly service: Service;
   constructor(coreContext: CoreContext) {
     super(coreContext);
@@ -64,6 +65,9 @@ export class ProductInfo extends PluginServiceClass {
   }
 
   private async getFirmware() {
+    if (this.firmware && this.firmware !== "unknown") {
+      return this.firmware;
+    }
     try {
       await this.deviceManager.waitForHandshake(2000);
       if (!this.deviceManager.isConnected) {
@@ -73,7 +77,7 @@ export class ProductInfo extends PluginServiceClass {
       await this.deviceManager.ensureDevice("getFirmware");
 
       const firmware = await this.deviceManager.device.getDeviceInfo();
-      this.log.info(`getFirmware | FirmwareVersion is ${firmware.fw_ver}`);
+      this.log.debug(`getFirmware | FirmwareVersion is ${firmware.fw_ver}`);
 
       this.firmware = firmware.fw_ver;
 
@@ -85,6 +89,9 @@ export class ProductInfo extends PluginServiceClass {
   }
 
   private async getSerialNumber() {
+    if (this.serialNumber && this.serialNumber !== "Unknown") {
+      return this.serialNumber;
+    }
     try {
       await this.deviceManager.waitForHandshake(2000);
       if (!this.deviceManager.isConnected) {
@@ -94,9 +101,10 @@ export class ProductInfo extends PluginServiceClass {
       await this.deviceManager.ensureDevice("getSerialNumber");
 
       const serialNumber = await this.deviceManager.device.getSerialNumber();
-      this.log.info(`getSerialNumber | Serial Number is ${serialNumber}`);
+      this.log.debug(`getSerialNumber | Serial Number is ${serialNumber}`);
 
-      return `${serialNumber}`;
+      this.serialNumber = `${serialNumber}`;
+      return this.serialNumber;
     } catch (err) {
       this.log.warn(`getSerialNumber | Failed getting the serial number.`, err);
       return `Unknown`;

@@ -20,6 +20,7 @@ export const createDeviceManagerMock = (): DeviceManagerMock => {
     waitForHandshake: jest.fn().mockResolvedValue(undefined),
     property: jest.fn(),
     ensureDevice: jest.fn(),
+    handshakePromise: Promise.resolve(),
   };
 
   return deviceManagerMock as DeviceManagerMock;

@@ -35,7 +35,7 @@ export class CareService extends PluginServiceClass {
       const sensorDirtyTime =
         this.deviceManager.property<number>("sensorDirtyTime") || 0;
       const lifetimePercent = (sensorDirtyTime / lifetime) * 100;
-      this.log.info(
+      this.log.debug(
         `getCareSensors | Sensors dirtyTime is ${sensorDirtyTime} seconds / ${lifetimePercent.toFixed(
           2
         )}%.`
@@ -59,7 +59,7 @@ export class CareService extends PluginServiceClass {
       const filterWorkTime =
         this.deviceManager.property<number>("filterWorkTime") || 0;
       const lifetimePercent = (filterWorkTime / lifetime) * 100;
-      this.log.info(
+      this.log.debug(
         `getCareFilter | Filter workTime is ${filterWorkTime} seconds / ${lifetimePercent.toFixed(
           2
         )}%.`
@@ -83,7 +83,7 @@ export class CareService extends PluginServiceClass {
       const sideBrushWorkTime =
         this.deviceManager.property<number>("sideBrushWorkTime") || 0;
       const lifetimePercent = (sideBrushWorkTime / lifetime) * 100;
-      this.log.info(
+      this.log.debug(
         `getCareSideBrush | SideBrush workTime is ${sideBrushWorkTime} seconds / ${lifetimePercent.toFixed(
           2
         )}%.`
@@ -110,7 +110,7 @@ export class CareService extends PluginServiceClass {
       const mainBrushWorkTime =
         this.deviceManager.property<number>("mainBrushWorkTime") || 0;
       const lifetimePercent = (mainBrushWorkTime / lifetime) * 100;
-      this.log.info(
+      this.log.debug(
         `getCareMainBrush | MainBrush workTime is ${mainBrushWorkTime} seconds / ${lifetimePercent.toFixed(
           2
         )}%.`

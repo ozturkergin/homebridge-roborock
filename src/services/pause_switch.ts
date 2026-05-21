@@ -62,7 +62,7 @@ export class PauseSwitch extends PluginServiceClass {
 
       const isPaused = this.deviceManager.isPaused;
       const canBePaused = this.deviceManager.isCleaning && !isPaused;
-      this.log.info(`getPauseState | Pause possible is ${canBePaused}`);
+      this.log.debug(`getPauseState | Pause possible is ${canBePaused}`);
       return canBePaused;
     } catch (err) {
       this.log.error(

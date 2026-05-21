@@ -169,7 +169,7 @@ export class WaterBoxService extends PluginServiceClass {
       await this.deviceManager.ensureDevice("getWaterSpeed");
 
       const speed = await this.deviceManager.device.getWaterBoxMode();
-      this.log.info(
+      this.log.debug(
         `getWaterSpeed | WaterBoxMode is ${speed} over miIO. Converting to HomeKit`
       );
 
@@ -178,7 +178,7 @@ export class WaterBoxService extends PluginServiceClass {
       let homekitValue = 0;
       if (waterSpeed) {
         const { homekitTopLevel, name } = waterSpeed;
-        this.log.info(
+        this.log.debug(
           `getWaterSpeed | WaterBoxMode is ${speed} over miIO "${name}" > HomeKit speed ${homekitTopLevel}%`
         );
         homekitValue = homekitTopLevel || 0;
