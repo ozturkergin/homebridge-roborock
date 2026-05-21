@@ -12,7 +12,7 @@ The easiest way to install this plugin is via the `hb-service` command, which en
 2. Run the following installation command:
 
 ```bash
-sudo hb-service add https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-roborock-ergin-1.0.0.tgz
+sudo hb-service add https://raw.githubusercontent.com/ozturkergin/homebridge-roborock/main/homebridge-roborock-ergin-1.0.2.tgz
 ```
 
 3. Once the installation is complete, **restart Homebridge** for the changes to take effect.
