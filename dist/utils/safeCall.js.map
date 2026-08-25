@@ -1,0 +1,1 @@
+{"version":3,"file":"safeCall.js","sourceRoot":"","sources":["../../src/utils/safeCall.ts"],"names":[],"mappings":";;AAMA,4BAOC;AAbD;;;;;GAKG;AACH,SAAgB,QAAQ,CACtB,UAAqC,EACrC,EAAqC;IAErC,IAAI,OAAO,UAAU,KAAK,WAAW,EAAE,CAAC;QACtC,EAAE,CAAC,UAAU,CAAC,CAAC;IACjB,CAAC;AACH,CAAC"}

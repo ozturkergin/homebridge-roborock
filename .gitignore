@@ -7,5 +7,4 @@ debug/
 bugs/
 .bin/
 coverage/
-dist/
 persist/

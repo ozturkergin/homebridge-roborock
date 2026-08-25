@@ -1,0 +1,1 @@
+{"version":3,"file":"product_info.mock.js","sourceRoot":"","sources":["../../src/services/product_info.mock.ts"],"names":[],"mappings":";;;AAIO,MAAM,qBAAqB,GAAG,GAAoB,EAAE;IACzD,MAAM,eAAe,GAAsD;QACzE,IAAI,EAAE,IAAI,CAAC,EAAE,EAAE;QACf,QAAQ,EAAE,EAAE;QACZ,QAAQ,EAAE,MAAM;KACjB,CAAC;IAEF,OAAO,eAAkC,CAAC;AAC5C,CAAC,CAAC;AARW,QAAA,qBAAqB,yBAQhC"}
